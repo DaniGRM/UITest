@@ -9,13 +9,11 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "TukyUI.h"
-#include "TukyColors.h"
-#include "TukyFonts.h"
-
 
 //==============================================================================
 UITestAudioProcessorEditor::UITestAudioProcessorEditor (UITestAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p), slider(*audioProcessor.apvts.getParameter("Slider"), "s")
+    : AudioProcessorEditor (&p), audioProcessor (p), slider(*audioProcessor.apvts.getParameter("Slider")), header("TukTuky2"),
+    toggleButton1(), toggleButton2()
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -24,10 +22,16 @@ UITestAudioProcessorEditor::UITestAudioProcessorEditor (UITestAudioProcessor& p)
 
     if (!logoImage.isValid())
         DBG("Error: No se pudo cargar el logo.");*/
-
     addAndMakeVisible(slider);
     addAndMakeVisible(label);
     addAndMakeVisible(header);
+
+    toggleButton1.setButtonText("Normal");
+    toggleButton2.setButtonText("Sync");
+    toggleButton1.onClick = [this]() { toggle1Clicked(); };
+    toggleButton2.onClick = [this]() { toggle2Clicked(); };
+    addAndMakeVisible(toggleButton1);
+    addAndMakeVisible(toggleButton2);
     setSize (600, 400);
 }
 
@@ -68,5 +72,8 @@ void UITestAudioProcessorEditor::resized()
     label.setJustificationType(juce::Justification::centred);
     label.setColour(juce::Label::textColourId, TukyUI::Colors::blue); // Cambiar color del texto
     label.setFont(TukyUI::Fonts::label); // Cambiar fuente del texto
+
+    toggleButton1.setBounds(150, 220, 100, 20);
+    toggleButton2.setBounds(150, 270, 100, 20);
 
 }

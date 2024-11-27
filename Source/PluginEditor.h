@@ -10,43 +10,8 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "TukyComponents.h"
-#include "TukyColors.h"
-#include "BinaryData.h"
+#include "TukyUI.h"
 
-class TukyHeader : public juce::Component
-{
-public:
-    TukyHeader() {}
-
-    void paint(juce::Graphics& g) override
-    {
-        auto bounds = getLocalBounds();
-
-        // Fondo
-        g.fillAll(TukyUI::Colors::bluegray);
-
-        // Dibujar el logo
-        auto logoHeight = bounds.getHeight() * 0.8;// Ajustamos el tamaño del logo
-        auto logoWidth = (logoHeight * 3.0f); // Relación de aspecto 4:3
-        auto logoBounds = juce::Rectangle<float>(10.0f, (bounds.getHeight() - logoHeight) / 2.0f, logoWidth, logoHeight);
-
-
-        auto logoImage = juce::ImageFileFormat::loadFrom(BinaryData::TUKY_imagotipo2_png, BinaryData::TUKY_imagotipo2_pngSize);
-
-        if (logoImage.isValid())
-        {
-            g.drawImage(logoImage, logoBounds);
-
-        }
-
-
-        
-    }
-};
-//==============================================================================
-/**
-*/
 
 class UITestAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
@@ -68,6 +33,38 @@ private:
 
     //juce::Image logoImage;
 
-    TukyHeader header;
+    TukyUI::Components::TukyHeader header;
+
+    TukyUI::Components::TukyToggleButton toggleButton1, toggleButton2;
+
+
+
+    void toggle1Clicked()
+    {
+        // Lógica para el evento onClick del ToggleButton
+        if (toggleButton1.getToggleState())
+        {
+
+            toggleButton2.setToggleState(false, true);
+        }
+        else
+        {
+            toggleButton2.setToggleState(true, true);
+        }
+    }
+
+
+    void toggle2Clicked()
+    {
+        // Lógica para el evento onClick del ToggleButton
+        if (toggleButton2.getToggleState())
+        {
+            toggleButton1.setToggleState(false, true);
+        }
+        else
+        {
+            toggleButton1.setToggleState(true, true);
+        }
+    }
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UITestAudioProcessorEditor)
 };
